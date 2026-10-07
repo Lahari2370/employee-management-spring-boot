@@ -1,0 +1,58 @@
+package com.example.employee_management.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.employee_management.DTOO.EmployeeResponseDTO;
+import com.example.employee_management.dto.EmployeeDTO;
+import com.example.employee_management.entity.Employee;
+import com.example.employee_management.service.EmployeeService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping
+    public List<EmployeeResponseDTO> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    @GetMapping("/{id}")
+    public EmployeeResponseDTO getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
+
+    @PostMapping
+    public EmployeeResponseDTO createEmployee(
+            @Valid @RequestBody EmployeeDTO employeeRequestDTO) {
+
+        return employeeService.createEmployee(employeeRequestDTO);
+    }
+    @PutMapping("/{id}")
+    public EmployeeResponseDTO updateEmployee(
+            @PathVariable Long id,
+           @Valid  @RequestBody EmployeeDTO employeeRequestDTO) {
+
+        return employeeService.updateEmployee(id, employeeRequestDTO);
+    }
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+         employeeService.deleteEmployee(id);
+}
+}
